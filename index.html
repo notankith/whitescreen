@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulated Broken Screen</title>
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #fullscreen-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        #fullscreen-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="fullscreen-button">Enter Fullscreen</button>
+    <script>
+        const button = document.getElementById("fullscreen-button");
+        const body = document.body;
+
+        button.addEventListener("click", function() {
+            if (!document.fullscreenElement) {
+                body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+            button.classList.toggle("hidden");
+        });
+
+        body.addEventListener("fullscreenchange", function() {
+            if (document.fullscreenElement) {
+                window.addEventListener("touchmove", function(e) {
+                    e.preventDefault();
+                }, { passive: false });
+            } else {
+                window.removeEventListener("touchmove", function(e) {
+                    e.preventDefault();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
